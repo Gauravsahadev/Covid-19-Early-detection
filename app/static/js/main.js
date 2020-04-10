@@ -31,6 +31,7 @@ $(document).ready(function () {
         // Show loading animation
         $(this).hide();
         $('.loader').show();
+        $('#upload-file').hide()
 
         // Make prediction by calling api /predict
         $.ajax({
@@ -45,6 +46,7 @@ $(document).ready(function () {
                 // Get and display the result
                 $('.loader').hide();
                 $('#result').fadeIn(600);
+                $('#upload-file').hide()
                 $('#result').text(' Result:  ' + data);
                 console.log('Success!');
             },

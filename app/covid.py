@@ -1,35 +1,24 @@
-import tensorflow as tf
-from tensorflow import keras
+from keras.utils import to_categorical
+from keras.models import load_model
 import numpy as np
-import cv2
+from keras.preprocessing.image import load_img, img_to_array
+from keras import backend as K
 
-MODEL_PATH="./frozen_models/frozen_graph.pb"
 
-def wrap_frozen_graph(graph_def, inputs, outputs, print_graph=False):
-    def _imports_graph_def():
-        tf.compat.v1.import_graph_def(graph_def, name="")
-    wrapped_import = tf.compat.v1.wrap_function(_imports_graph_def, [])
-    import_graph = wrapped_import.graph
-    return wrapped_import.prune(
-        tf.nest.map_structure(import_graph.as_graph_element, inputs),
-        tf.nest.map_structure(import_graph.as_graph_element, outputs))
+class Covid:
+    def __init__(self, IMAGE_PATH, MODEL_PATH):
+        self.IMAGE_PATH = IMAGE_PATH
+        self.MODEL_PATH = MODEL_PATH
 
-def covid_predict(IMAGE_PATH):
-    with tf.io.gfile.GFile(MODEL_PATH, "rb") as f:
-    graph_def = tf.compat.v1.GraphDef()
-    loaded = graph_def.ParseFromString(f.read())
-
-    # Wrap frozen graph to ConcreteFunctions
-    frozen_func = wrap_frozen_graph(graph_def=graph_def,
-                                    inputs=["x:0"],
-                                    outputs=["Identity:0"],
-                                    print_graph=True)
-
-    image = cv2.imread(IMAGE_PATH)
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-    image = cv2.resize(image, (224, 224))
-    data = np.array([image]) / 255.0
-    data=data.astype('float32')
-    # Get predictions for images
-    predictions = frozen_func(x=tf.constant(data))
-    return np.argmax(predictions[0].numpy()[i]
+    def covid_predict(self):
+        # Before prediction
+        K.clear_session()
+        model = load_model(self.MODEL_PATH)
+        # Loading and preprocessing image
+        img = load_img(self.IMAGE_PATH, target_size=(
+            224, 224), color_mode='rgb')
+        img = img_to_array(img)
+        img = np.array(img) / 255.0
+        # Get predictions for image
+        prediction = ['Positive', 'Negative']
+        return prediction[np.argmax(model.predict(np.expand_dims(img, axis=0)))]

@@ -7,6 +7,6 @@ The dataset has been taken from [here ](https://github.com/ieee8023/covid-chestx
 
 Please, go and check our simple WebApp [here ](http://covid19-early-detection.herokuapp.com/).
 
-If you like our endeavour, Please give a : star2 :
+If you like our endeavour, Please give a :star:
 
-Made with : heart : by Gaurav Sahaden and Debanjona Bhattacharjya
+Made with :purple_heart: by Gaurav Sahaden and Debanjona Bhattacharjya

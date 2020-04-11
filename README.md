@@ -9,4 +9,4 @@ Please, go and check our simple WebApp [here ](http://covid19-early-detection.he
 
 If you like our endeavour, Please give a :star:
 
-Made with :purple_heart: by Gaurav Sahaden and Debanjona Bhattacharjya
+Made with :purple_heart: by Gaurav Sahadev and Debanjona Bhattacharjya

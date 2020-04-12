@@ -20,6 +20,7 @@ class Covid:
         self.MODEL_PATH = MODEL_PATH
 
     def get_class_activation_map(self,predict,model,img) :
+        np.seterr(divide='ignore', invalid='ignore')
         img=np.expand_dims(img, axis=0)
         target_class = predict
         last_conv = model.get_layer('block5_conv3')
@@ -51,13 +52,18 @@ class Covid:
         K.clear_session()
         model = load_model(self.MODEL_PATH)
         # Loading and preprocessing image
-        img = load_img(self.IMAGE_PATH, target_size=(
-            224, 224), color_mode='rgb')
-        img = img_to_array(img)
-        img = np.array(img) / 255.0
+        data=[]
+        img = load_img(self.IMAGE_PATH, color_mode='rgb', target_size=(
+            224, 224))
+        image = img_to_array(img)
+        img = np.expand_dims(image, axis=0)
+        data.append(img)
+        data = np.array(data) / 255.0
         # Get predictions for image
         prediction = ['Positive', 'Negative']
-        predict=np.argmax(model.predict(np.expand_dims(img, axis=0)))
-        self.get_class_activation_map(predict,model,img)
-        return prediction[predict]
+        preds = model.predict(data[0])
+        predict = np.argmax(preds)
+        probability = "{:.2f}".format(preds[0][predict])
+        self.get_class_activation_map(predict,model,image)
+        return {'prediction':prediction[predict],'probability':probability}
 

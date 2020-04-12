@@ -20,6 +20,7 @@
 <h2 style="text-align: center;">Heatmap</h2>
 
 <p style="text-align: center;">The yellow region shows the affected area.</p>
+<p style="text-align: center;">[Note: If the result is negative then heatmap is not displayed.]</p>
 {% if image_path %}
 <img src="{{url_for("static", filename="heatmap/" + image_path)}}" alt="Heatmap" class="responsive"">
 {% endif %}

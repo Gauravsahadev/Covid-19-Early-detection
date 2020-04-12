@@ -38,7 +38,7 @@ class Covid:
             for y in range(heatmap.shape[1]):
                 heatmap[x,y] = np.max(heatmap[x,y],0)
         heatmap = np.maximum(heatmap,0)
-        heatmap = np.max(heatmap)
+        heatmap /= np.max(heatmap)
         img_gray = cv2.cvtColor(img[0], cv2.COLOR_BGR2GRAY)
         upsample = cv2.resize(heatmap, (880,882))
         img_gray= cv2.resize(img_gray,(880,882))

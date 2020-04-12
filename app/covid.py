@@ -1,3 +1,4 @@
+import cv2
 from keras.utils import to_categorical
 from keras.models import load_model
 import numpy as np
@@ -6,7 +7,6 @@ import os
 import matplotlib.pyplot as plt
 from keras.preprocessing.image import load_img, img_to_array
 from keras import backend as K
-import cv2
 
 class File:
     def __init__(self,FILENAME=''):

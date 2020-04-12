@@ -1,6 +1,6 @@
 from app import app
-from app.covid import Covid,File
-from flask import Flask, jsonify, send_file, request, redirect, url_for, render_template
+from app.covid import Covid
+from flask import Flask, jsonify, redirect, url_for, render_template,session, escape, request
 import os
 from os import listdir
 from os.path import isfile, join
@@ -14,7 +14,6 @@ app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 ALLOWED_EXTENSIONS = set(['jpg', 'jpeg', 'png'])
 
-file_obj=File()
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -22,14 +21,17 @@ def allowed_file(filename):
 @app.route('/', methods=['GET'])
 def index():
     # Main page
-    # heatmap_path='app/static/heatmap/'
-    # heatmap_files=[f for f in listdir(heatmap_path) if isfile(join(heatmap_path, f))]
-    # [os.remove(heatmap_path+heatmap_file) for heatmap_file in heatmap_files]
+    session.pop('filename', None)
+    heatmap_path='app/static/heatmap/'
+    heatmap_files=[f for f in listdir(heatmap_path) if isfile(join(heatmap_path, f))]
+    [os.remove(heatmap_path+heatmap_file) for heatmap_file in heatmap_files if heatmap_file != 'heatmap.jpeg']
+    data_files=[f for f in listdir(UPLOAD_FOLDER) if isfile(join(UPLOAD_FOLDER, f))]
+    [os.remove(UPLOAD_FOLDER+data_file) for data_file in data_files if data_file != 'covid.jpg']
     return render_template('index.html')
 
 @app.route('/heatmap.html', methods=['GET'])
 def heatmap():
-    FILE=file_obj.get_filename()
+    FILE=escape(session['filename'])
     return render_template('heatmap.html',image_path=FILE)
 
 
@@ -52,7 +54,7 @@ def upload():
             if isfile(file) == False:
                 return jsonify({'message': 'File not found'})
             preds = Covid(file, MODEL_PATH).covid_predict()
-            file_obj.__init__(filename)
+            session['filename']=filename
             os.remove(file)
             return preds
         else:

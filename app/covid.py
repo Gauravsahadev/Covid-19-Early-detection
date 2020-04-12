@@ -8,12 +8,6 @@ import matplotlib.pyplot as plt
 from keras.preprocessing.image import load_img, img_to_array
 from keras import backend as K
 
-class File:
-    def __init__(self,FILENAME=''):
-        self.FILENAME=FILENAME
-    def get_filename(self):
-        return self.FILENAME
-
 class Covid:
     def __init__(self, IMAGE_PATH, MODEL_PATH):
         self.IMAGE_PATH = IMAGE_PATH

@@ -22,6 +22,7 @@ class Covid:
     def get_class_activation_map(self,predict,model,img) :
         np.seterr(divide='ignore', invalid='ignore')
         img=np.expand_dims(img, axis=0)
+        img= np.array(img) / 255.0
         target_class = predict
         last_conv = model.get_layer('block5_conv3')
         grads =K.gradients(model.output[:,target_class],last_conv.output)[0]
@@ -45,23 +46,21 @@ class Covid:
         path=self.IMAGE_PATH.split('data')
         path_heatmap='heatmap'+path[1]
         output_path_gradcam = path[0]+'static/'+path_heatmap
-        plt.imsave(output_path_gradcam,upsample * img_gray)
+        plt.imsave(output_path_gradcam,(upsample * img_gray))
 
     def covid_predict(self):
         # Before prediction
         K.clear_session()
         model = load_model(self.MODEL_PATH)
         # Loading and preprocessing image
-        data=[]
         img = load_img(self.IMAGE_PATH, color_mode='rgb', target_size=(
             224, 224))
         image = img_to_array(img)
         img = np.expand_dims(image, axis=0)
-        data.append(img)
-        data = np.array(data) / 255.0
+        data = np.array(img) / 255.0
         # Get predictions for image
         prediction = ['Positive', 'Negative']
-        preds = model.predict(data[0])
+        preds = model.predict(data)
         predict = np.argmax(preds)
         probability = "{:.2f}".format(preds[0][predict])
         self.get_class_activation_map(predict,model,image)

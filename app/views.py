@@ -22,9 +22,9 @@ def allowed_file(filename):
 @app.route('/', methods=['GET'])
 def index():
     # Main page
-    heatmap_path='app/static/heatmap/'
-    heatmap_files=[f for f in listdir(heatmap_path) if isfile(join(heatmap_path, f))]
-    [os.remove(heatmap_path+heatmap_file) for heatmap_file in heatmap_files]
+    # heatmap_path='app/static/heatmap/'
+    # heatmap_files=[f for f in listdir(heatmap_path) if isfile(join(heatmap_path, f))]
+    # [os.remove(heatmap_path+heatmap_file) for heatmap_file in heatmap_files]
     return render_template('index.html')
 
 @app.route('/heatmap.html', methods=['GET'])

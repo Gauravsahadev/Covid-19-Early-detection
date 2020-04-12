@@ -3,6 +3,7 @@ $(document).ready(function () {
     $('.image-section').hide();
     $('.loader').hide();
     $('#result').hide();
+    $('#btn-heatmap').hide();
 
     // Upload Preview
     function readURL(input) {
@@ -19,6 +20,7 @@ $(document).ready(function () {
     $("#imageUpload").change(function () {
         $('.image-section').show();
         $('#btn-predict').show();
+        $('#btn-heatmap').hide();
         $('#result').text('');
         $('#result').hide();
         readURL(this);
@@ -48,6 +50,7 @@ $(document).ready(function () {
                 $('#result').fadeIn(600);
                 $('#upload-file').hide()
                 $('#result').text(' Result:  ' + data);
+                $('#btn-heatmap').show();
                 console.log('Success!');
             },
         });

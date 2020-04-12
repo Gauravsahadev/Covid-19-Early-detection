@@ -1,14 +1,50 @@
+import cv2
 from keras.utils import to_categorical
 from keras.models import load_model
 import numpy as np
+from os.path import isfile
+import os
+import matplotlib.pyplot as plt
 from keras.preprocessing.image import load_img, img_to_array
 from keras import backend as K
 
+class File:
+    def __init__(self,FILENAME=''):
+        self.FILENAME=FILENAME
+    def get_filename(self):
+        return self.FILENAME
 
 class Covid:
     def __init__(self, IMAGE_PATH, MODEL_PATH):
         self.IMAGE_PATH = IMAGE_PATH
         self.MODEL_PATH = MODEL_PATH
+
+    def get_class_activation_map(self,predict,model,img) :
+        img=np.expand_dims(img, axis=0)
+        target_class = predict
+        last_conv = model.get_layer('block5_conv3')
+        grads =K.gradients(model.output[:,target_class],last_conv.output)[0]
+        pooled_grads = K.mean(grads,axis=(0,1,2))
+        iterate = K.function([model.input],[pooled_grads,last_conv.output[0]])
+        pooled_grads_value,conv_layer_output = iterate([img])
+
+        for i in range(512):
+            conv_layer_output[:,:,i] *= pooled_grads_value[i]
+
+        heatmap = np.mean(conv_layer_output,axis=-1)
+
+        for x in range(heatmap.shape[0]):
+            for y in range(heatmap.shape[1]):
+                heatmap[x,y] = np.max(heatmap[x,y],0)
+        heatmap = np.maximum(heatmap,0)
+        heatmap /= np.max(heatmap)
+        img_gray = cv2.cvtColor(img[0], cv2.COLOR_BGR2GRAY)
+        upsample = cv2.resize(heatmap, (880,882))
+        img_gray= cv2.resize(img_gray,(880,882))
+        path=self.IMAGE_PATH.split('data')
+        path_heatmap='heatmap'+path[1]
+        output_path_gradcam = path[0]+'static/'+path_heatmap
+        plt.imsave(output_path_gradcam,upsample * img_gray)
 
     def covid_predict(self):
         # Before prediction
@@ -21,4 +57,7 @@ class Covid:
         img = np.array(img) / 255.0
         # Get predictions for image
         prediction = ['Positive', 'Negative']
-        return prediction[np.argmax(model.predict(np.expand_dims(img, axis=0)))]
+        predict=np.argmax(model.predict(np.expand_dims(img, axis=0)))
+        self.get_class_activation_map(predict,model,img)
+        return prediction[predict]
+

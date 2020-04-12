@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.responsive {
+  width: 50%;
+  height: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+.body{
+    background-color: #808080;
+}
+</style>
+</head>
+<body class="body">
+
+<h2 style="text-align: center;">Heatmap</h2>
+
+<p style="text-align: center;">The yellow region shows the affected area.</p>
+{% if image_path %}
+<img src="{{url_for("static", filename="heatmap/" + image_path)}}" alt="Heatmap" class="responsive"">
+{% endif %}
+</body>
+</html>

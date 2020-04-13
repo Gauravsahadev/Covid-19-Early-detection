@@ -57,6 +57,7 @@ class Covid:
         preds = model.predict(data)
         predict = np.argmax(preds)
         probability = "{:.2f}".format(preds[0][predict])
+        print(predict)
         self.get_class_activation_map(predict,model,image)
         return {'prediction':prediction[predict],'probability':probability}
 

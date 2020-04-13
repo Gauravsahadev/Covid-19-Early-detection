@@ -18,7 +18,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
-@app.route('/', methods=['GET'])
+@app.route('/index.html', methods=['GET'])
 def index():
     # Main page
     session.pop('filename', None)
@@ -34,6 +34,9 @@ def heatmap():
     FILE=escape(session['filename'])
     return render_template('heatmap.html',image_path=FILE)
 
+@app.route('/', methods=['GET'])
+def landing():
+    return render_template('landing.html')
 
 @app.route('/predict', methods=['GET', 'POST'])
 def upload():

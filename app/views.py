@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 UPLOAD_FOLDER = 'app/data/'
 app.secret_key = '/\x8c\x9a\xadT\xdf\x1b\xf0\r\x87\xa9\x1aV\xd5\x04\xbc\x0c\xff|\x15\x0edmd'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-MODEL_PATH = 'app/models/covid_model_v3.h5'
+MODEL_PATH = 'app/models/covid_model.h5'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 ALLOWED_EXTENSIONS = set(['jpg', 'jpeg', 'png'])

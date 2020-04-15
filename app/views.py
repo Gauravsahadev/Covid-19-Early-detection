@@ -9,7 +9,7 @@ from werkzeug.utils import secure_filename
 UPLOAD_FOLDER = 'app/data/'
 app.secret_key = '/\x8c\x9a\xadT\xdf\x1b\xf0\r\x87\xa9\x1aV\xd5\x04\xbc\x0c\xff|\x15\x0edmd'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-MODEL_PATH = 'app/models/covid_model.h5'
+MODEL_PATH = 'app/models/covid_model_v3.h5'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 ALLOWED_EXTENSIONS = set(['jpg', 'jpeg', 'png'])
@@ -31,7 +31,9 @@ def index():
 
 @app.route('/heatmap.html', methods=['GET'])
 def heatmap():
-    FILE=escape(session['filename'])
+    FILE=None
+    if isfile('app/static/heatmap/'+str(session['filename'])):
+        FILE=escape(session['filename'])
     return render_template('heatmap.html',image_path=FILE)
 
 @app.route('/', methods=['GET'])
@@ -57,7 +59,10 @@ def upload():
             if isfile(file) == False:
                 return jsonify({'message': 'File not found'})
             preds = Covid(file, MODEL_PATH).covid_predict()
-            session['filename']=filename
+            if preds['prediction'] =='Negative':
+                session['filename']=None
+            else:
+                session['filename']=filename
             os.remove(file)
             return preds
         else:

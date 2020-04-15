@@ -14,6 +14,8 @@ class Covid:
         self.MODEL_PATH = MODEL_PATH
 
     def get_class_activation_map(self,predict,model,img) :
+        if predict==1:
+            return
         np.seterr(divide='ignore', invalid='ignore')
         img=np.expand_dims(img, axis=0)
         img= np.array(img) / 255.0
@@ -56,7 +58,7 @@ class Covid:
         prediction = ['Positive', 'Negative']
         preds = model.predict(data)
         predict = np.argmax(preds)
-        probability = "{:.2f}".format(preds[0][predict])
+        probability = "{:.2f} %".format((preds[0][predict])*100)
         print(predict)
         self.get_class_activation_map(predict,model,image)
         return {'prediction':prediction[predict],'probability':probability}

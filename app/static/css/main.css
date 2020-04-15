@@ -20,30 +20,34 @@ input[type="file"] {
     display: none;
 }
 
-.upload-label{
-    display: inline-block;
-    padding: 12px 30px;
-    background: #39D2B4;
-    color: #fff;
-    font-size: 1em;
-    transition: all .4s;
-    cursor: pointer;
-}
-
-.upload-label:hover{
-    background: #34495E;
-    color: #39D2B4;
-}
-
 .loader {
     border: 8px solid #f3f3f3; /* Light grey */
-    border-top: 8px solid #3498db; /* Blue */
+    border-top: 8px solid rgb(124, 59, 209);/* purple */
     border-radius: 50%;
     width: 50px;
     height: 50px;
     animation: spin 1s linear infinite;
 }
-
+.btn {
+    margin-left: 10px;
+    margin-right: 10px;
+    }
+.btn-success {
+    font-family: Raleway-SemiBold;
+    font-size: 13px;
+    color:rgb(124, 59, 209);
+    letter-spacing: 1px;
+    line-height: 15px;
+    border: 2px solid rgb(124, 59, 209);
+    border-radius: 40px;
+    background: transparent;
+    transition: all 0.3s ease 0s;
+}
+.btn-success:hover {
+    color: #FFF;
+    background:rgb(124, 59, 209);
+    border: 2px solid rgb(124, 59, 209);
+}
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }

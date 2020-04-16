@@ -9,7 +9,8 @@ The dataset has been taken from [here ](https://github.com/ieee8023/covid-chestx
 
 Please, go and check our simple WebApp :desktop_computer: [Covid-19 Early detection](http://covid19-early-detection.herokuapp.com/).
 
-
+![Index page](https://github.com/Gauravsahadev/Covid-19-Early-detection/blob/master/app/static/img/img1.png)
+![Prediction page](https://github.com/Gauravsahadev/Covid-19-Early-detection/blob/master/app/static/img/img2.png)
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
